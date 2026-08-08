@@ -78,7 +78,7 @@ export default function Layout({ children }) {
             <Link to="/">Accueil</Link>
             <Link to="/listings">Annonces</Link>
             <Link to="/points">Les points</Link>
-            {isAuthenticated && <Link to="/dashboard">Mon espace</Link>}
+            <Link to="/dashboard">Mon espace</Link>
             {isAuthenticated && pointsBalance !== null && (
               <span className="nav-points-balance">{pointsBalance} pts</span>
             )}
@@ -125,7 +125,7 @@ export default function Layout({ children }) {
           <Link to="/">Accueil</Link>
           <Link to="/listings">Annonces</Link>
           <Link to="/points">Les points</Link>
-          {isAuthenticated && <Link to="/dashboard">Mon espace</Link>}
+          <Link to="/dashboard">Mon espace</Link>
           {isAuthenticated && pointsBalance !== null && (
             <span className="nav-points-balance nav-points-balance--mobile">{pointsBalance} pts</span>
           )}
