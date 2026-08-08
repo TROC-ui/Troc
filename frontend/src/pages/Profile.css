@@ -1,0 +1,103 @@
+.profile-avatar-lg {
+  width: 84px;
+  height: 84px;
+  border-radius: 26px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid var(--line-strong);
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal);
+  background: rgba(20, 156, 140, 0.1);
+  border: 1px solid rgba(20, 156, 140, 0.3);
+  border-radius: 100px;
+  padding: 4px 12px;
+  vertical-align: middle;
+}
+
+.verification-panel {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.verification-form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.verification-form-row input {
+  flex: 1;
+  min-width: 220px;
+  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  color: var(--paper);
+  background: var(--ink-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  padding: 12px 18px;
+}
+
+.verification-form-row input:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.verification-status p {
+  font-size: 14px;
+  color: var(--paper-dim);
+  margin: 0;
+}
+
+.verification-status--approved p {
+  color: var(--teal);
+}
+
+.verification-rejected-note {
+  font-size: 13.5px;
+  color: #c0392b;
+  margin: 0 0 14px;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.review-card {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  background: var(--ink-2);
+  box-shadow: 0 4px 20px rgba(20, 23, 26, 0.05);
+}
+
+.review-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.review-card p {
+  font-size: 14px;
+  color: var(--paper-dim);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}

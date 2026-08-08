@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://troc-echange.fr/sitemap.xml

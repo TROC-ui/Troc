@@ -1,0 +1,114 @@
+.points-balance-card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 36px;
+  padding: 24px 32px;
+  border: 1px solid var(--line-strong);
+  border-radius: 20px;
+  background: var(--ink-2);
+}
+
+.points-balance-label {
+  font-size: 11px;
+  color: var(--paper-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.points-balance-value {
+  font-family: 'Geist', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.points-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.points-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 26px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--ink-2);
+  flex-wrap: wrap;
+  transition: border-color 0.15s var(--ease-out), transform 0.15s var(--ease-out);
+}
+
+.points-history-row:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-1px);
+}
+
+.points-history-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.points-history-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.points-history-reason {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--paper);
+  margin-bottom: 5px;
+}
+
+.points-history-date {
+  font-size: 12px;
+  color: var(--paper-dim);
+}
+
+.points-history-amount-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.points-history-amount {
+  font-family: 'Geist', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.points-history-amount.positive {
+  color: var(--teal);
+}
+
+.points-history-amount.negative {
+  color: #c0392b;
+}
+
+.points-history-link {
+  font-size: 13px;
+  padding: 0;
+}
+
+@media (max-width: 640px) {
+  .points-history-row {
+    align-items: flex-start;
+  }
+
+  .points-history-amount-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

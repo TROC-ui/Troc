@@ -1,0 +1,77 @@
+.legal-content {
+  max-width: 760px;
+}
+
+.legal-content h2 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--paper);
+  margin: 44px 0 14px;
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content h3 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--paper);
+  margin: 24px 0 10px;
+}
+
+.legal-content p {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.legal-content ul {
+  padding-left: 20px;
+  margin-bottom: 14px;
+}
+
+.legal-content li {
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.legal-content strong {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.legal-content .placeholder {
+  color: var(--violet);
+  font-style: italic;
+}
+
+.legal-meta {
+  color: var(--paper-dim);
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+
+.legal-toc {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding: 0;
+  margin: 24px 0 0;
+}
+
+.legal-toc a {
+  font-size: 13.5px;
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.legal-toc a:hover {
+  text-decoration: underline;
+}

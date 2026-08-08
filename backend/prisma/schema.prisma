@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ============= USERS =============
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  shopName  String
+  address   String?
+  phone     String?
+  avatar    String?    // URL de la photo de profil
+  isAdmin   Boolean    @default(false)
+  resetToken String?   @unique // Jeton de réinitialisation de mot de passe, à usage unique
+  resetTokenExpiresAt DateTime?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  verification Verification?
+  listings     Listing[]
+  sentExchanges Exchange[] @relation("sender")
+  receivedExchanges Exchange[] @relation("receiver")
+  sentMessages Message[] @relation("sender")
+  receivedMessages Message[] @relation("receiver")
+  sentReviews  Review[] @relation("reviewer")
+  receivedReviews Review[] @relation("reviewed")
+  points       UserPoints?
+  photos       Photo[]
+  favoriteListings FavoriteListing[]
+  favoritedBy  FavoriteUser[] @relation("favoritedUser")
+  favoriteUsers FavoriteUser[] @relation("favoritingUser")
+
+  @@map("users")
+}
+
+// ============= VERIFICATION =============
+model Verification {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  adeliNumber String?  // Numéro ADELI/RPPS
+  status    String     @default("pending") // pending, approved, rejected
+  proofDocument String? // URL du justificatif
+  rejectionReason String?
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("verifications")
+}
+
+// ============= LISTINGS (Annonces) =============
+model Listing {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title     String
+  brand     String
+  reference String?
+  size      String?
+  condition String     // excellent, bon, correct, mauvais
+  typology  String?    // Enfant, Homme, Femme, Unisexe, Solaire, Sport, Luxe
+  shape     String?    // Ronde, Carrée / Rectangulaire, Papillon, Aviator, Cat-eye, Oversize, Wayfarer
+  material  String?    // Acétate, Métal, Titane, Mixte, TR90 / Plastique souple
+  style     String?    // Classique, Tendance / Mode, Minimaliste, Vintage / Rétro, Sport / Technique
+  tags      String?    // Tableau JSON de tags libres : Progressive-compatible, Grande taille, Petite taille, Sans cerclage, Semi-cerclée
+  description String?
+  indicativeValue Int? // Valeur indicative en euros
+  status    String     @default("active") // active, exchanged, archived
+
+  searchingFor String? // Typologie recherchée en retour (texte généré depuis un choix de pill)
+  wantedNotes String?  // Précisions libres sur ce qui est recherché en retour
+  location  String?    // Ville/département
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  photos    Photo[]
+  exchanges Exchange[] @relation("listing")
+  favoritedBy FavoriteListing[]
+
+  @@map("listings")
+}
+
+// ============= FAVORITES =============
+model FavoriteListing {
+  id        String     @id @default(cuid())
+
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  listingId String
+  listing   Listing    @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime   @default(now())
+
+  @@unique([userId, listingId])
+  @@map("favorite_listings")
+}
+
+model FavoriteUser {
+  id        String     @id @default(cuid())
+
+  userId    String
+  user      User       @relation("favoritingUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  favoritedUserId String
+  favoritedUser   User @relation("favoritedUser", fields: [favoritedUserId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime   @default(now())
+
+  @@unique([userId, favoritedUserId])
+  @@map("favorite_users")
+}
+
+// ============= PHOTOS =============
+model Photo {
+  id        String     @id @default(cuid())
+  listingId String?
+  listing   Listing?   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  userId    String?
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  url       String
+  order     Int        @default(0)
+
+  createdAt DateTime   @default(now())
+
+  @@map("photos")
+}
+
+// ============= EXCHANGES (Échanges) =============
+model Exchange {
+  id        String     @id @default(cuid())
+
+  senderId  String
+  sender    User       @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver  User       @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  listingId String
+  listing   Listing    @relation("listing", fields: [listingId], references: [id])
+
+  status    String     @default("PROPOSED") // PROPOSED, DISCUSSION, ACCEPTED, SHIPPED, RECEIVED, CANCELLED
+
+  pointsNeeded Int    @default(0) // Points à ajouter pour équilibrer
+  pointsDirection String? // "sender_to_receiver" ou "receiver_to_sender"
+
+  receptionPhotoUrl String? // Photo à la réception (ancien champ, non utilisé)
+  rceptionConfirmedAt DateTime?
+
+  // Un échange implique deux envois distincts : chaque camp confirme sa propre expédition/réception.
+  shippedBySender    Boolean  @default(false)
+  shippedByReceiver  Boolean  @default(false)
+  receivedBySender   Boolean  @default(false)
+  receivedByReceiver Boolean  @default(false)
+  receptionPhotoSender   String? // Photo prise par le sender à la réception du colis du receiver
+  receptionPhotoReceiver String? // Photo prise par le receiver à la réception du colis du sender
+
+  proposedAt DateTime   @default(now())
+  acceptedAt DateTime?
+  shippedAt  DateTime?
+  receivedAt DateTime?
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  messages  Message[]
+  reviews   Review[]
+
+  @@map("exchanges")
+}
+
+// ============= MESSAGES (Messagerie) =============
+model Message {
+  id        String     @id @default(cuid())
+
+  exchangeId String
+  exchange  Exchange   @relation(fields: [exchangeId], references: [id], onDelete: Cascade)
+
+  senderId  String
+  sender    User       @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver  User       @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  content   String
+  read      Boolean    @default(false)
+  readAt    DateTime?
+
+  createdAt DateTime   @default(now())
+
+  @@map("messages")
+}
+
+// ============= REVIEWS (Avis/Notation) =============
+model Review {
+  id        String     @id @default(cuid())
+
+  reviewerId String
+  reviewer  User       @relation("reviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  reviewedId String
+  reviewed  User       @relation("reviewed", fields: [reviewedId], references: [id], onDelete: Cascade)
+
+  exchangeId String?
+  exchange  Exchange?  @relation(fields: [exchangeId], references: [id], onDelete: Cascade)
+
+  rating    Int        // 1-5 stars
+  comment   String?
+
+  compliance Boolean?  // Respecté les conditions?
+  shippingSpeed Boolean? // Envoi rapide?
+  itemCondition Boolean? // État conforme à la description?
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("reviews")
+}
+
+// ============= USER POINTS =============
+model UserPoints {
+  id        String     @id @default(cuid())
+
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  balance   Int        @default(0) // Solde actuel de points
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  // Relations
+  transactions PointTransaction[]
+
+  @@map("user_points")
+}
+
+// ============= POINT TRANSACTIONS =============
+model PointTransaction {
+  id        String     @id @default(cuid())
+
+  pointsId  String
+  points    UserPoints @relation(fields: [pointsId], references: [id], onDelete: Cascade)
+
+  amount    Int        // Positif ou négatif
+  reason    String     // "exchange_received", "exchange_sent", "admin_adjustment"
+  exchangeId String?
+
+  createdAt DateTime   @default(now())
+
+  @@map("point_transactions")
+}

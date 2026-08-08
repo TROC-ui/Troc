@@ -1,0 +1,42 @@
+.admin-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.admin-verif-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-verif-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--ink-2);
+  flex-wrap: wrap;
+}
+
+.admin-verif-number {
+  font-size: 13px;
+  color: var(--paper-dim);
+  margin-top: 6px;
+}
+
+.admin-verif-reason {
+  font-size: 13px;
+  color: #c0392b;
+  margin-top: 6px;
+}
+
+.admin-verif-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}

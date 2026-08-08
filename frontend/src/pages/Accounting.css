@@ -1,0 +1,14 @@
+.disclaimer-box {
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 18px;
+  padding: 22px 26px;
+  background: rgba(124, 58, 237, 0.06);
+  font-size: 14.5px;
+  color: var(--paper-dim);
+  line-height: 1.6;
+}
+
+.disclaimer-box strong {
+  color: var(--paper);
+  font-weight: 600;
+}
