@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import API from '../store/authStore'
+import { API_BASE } from '../utils/apiBase'
 import Logo from '../components/Logo'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
@@ -45,8 +46,8 @@ export default function Profile() {
       return
     }
     Promise.all([
-      fetch(`/api/users/${targetId}`).then((res) => (res.ok ? res.json() : null)),
-      fetch(`/api/users/${targetId}/reviews`).then((res) => (res.ok ? res.json() : [])),
+      fetch(`${API_BASE}/users/${targetId}`).then((res) => (res.ok ? res.json() : null)),
+      fetch(`${API_BASE}/users/${targetId}/reviews`).then((res) => (res.ok ? res.json() : [])),
     ]).then(([userData, reviewsData]) => {
       setProfile(userData)
       setReviews(Array.isArray(reviewsData) ? reviewsData : [])

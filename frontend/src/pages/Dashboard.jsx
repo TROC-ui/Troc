@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import API from '../store/authStore'
+import { API_BASE } from '../utils/apiBase'
 import Logo from '../components/Logo'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useListings } from '../hooks/useListings'
@@ -42,7 +43,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user?.id) return
-    fetch(`/api/users/${user.id}/points`)
+    fetch(`${API_BASE}/users/${user.id}/points`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setPoints(data?.balance ?? 0))
       .catch(() => setPoints(0))

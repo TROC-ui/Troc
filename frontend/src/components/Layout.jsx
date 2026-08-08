@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import { API_BASE } from '../utils/apiBase'
 import Logo from './Logo'
 import ToastContainer from './ToastContainer'
 import './Layout.css'
@@ -17,7 +18,7 @@ export default function Layout({ children }) {
       setPointsBalance(null)
       return
     }
-    fetch(`/api/users/${user.id}/points`)
+    fetch(`${API_BASE}/users/${user.id}/points`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setPointsBalance(data?.balance ?? 0))
       .catch(() => setPointsBalance(0))

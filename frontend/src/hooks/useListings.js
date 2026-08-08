@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { API_BASE } from '../utils/apiBase'
 
 export function useListings() {
   const [listings, setListings] = useState([])
@@ -6,7 +7,7 @@ export function useListings() {
 
   const refetch = useCallback(() => {
     setLoading(true)
-    return fetch('/api/listings')
+    return fetch(`${API_BASE}/listings`)
       .then((res) => res.json())
       .then((data) => setListings(Array.isArray(data) ? data : []))
       .catch((err) => console.error('Erreur de chargement des annonces :', err))

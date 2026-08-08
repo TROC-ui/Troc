@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import Logo from '../components/Logo'
 import { useAuthStore } from '../store/authStore'
 import API from '../store/authStore'
+import { API_BASE } from '../utils/apiBase'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useListings } from '../hooks/useListings'
 import { useSEO } from '../hooks/useSEO'
@@ -55,13 +56,13 @@ export default function ListingDetail() {
   useEffect(() => {
     let cancelled = false
     setLoading(true)
-    fetch(`/api/listings/${id}`)
+    fetch(`${API_BASE}/listings/${id}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (cancelled) return
         setListing(data)
         if (data?.user?.id) {
-          fetch(`/api/users/${data.user.id}/reviews`)
+          fetch(`${API_BASE}/users/${data.user.id}/reviews`)
             .then((res) => (res.ok ? res.json() : []))
             .then((r) => !cancelled && setReviews(Array.isArray(r) ? r : []))
             .catch(() => {})

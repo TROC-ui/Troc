@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import { API_BASE } from '../utils/apiBase'
 import Logo from '../components/Logo'
 import { useSEO } from '../hooks/useSEO'
 import { SkeletonBlock } from '../components/Skeleton'
@@ -30,7 +31,7 @@ export default function MyPoints() {
 
   useEffect(() => {
     if (!user?.id) return
-    fetch(`/api/users/${user.id}/points`)
+    fetch(`${API_BASE}/users/${user.id}/points`)
       .then((res) => (res.ok ? res.json() : null))
       .then(setPoints)
       .finally(() => setLoading(false))
