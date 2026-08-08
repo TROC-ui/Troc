@@ -4,6 +4,7 @@ import API from '../store/authStore'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
 import { useToastStore } from '../store/toastStore'
+import PasswordField from '../components/PasswordField'
 
 export default function ResetPassword() {
   useSEO('Réinitialiser le mot de passe')
@@ -69,28 +70,24 @@ export default function ResetPassword() {
 
             <div className="form-block">
               <div className="field-row">
-                <label>Nouveau mot de passe
-                  <input
-                    type="password"
-                    placeholder="8 caractères minimum"
-                    minLength={8}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </label>
+                <PasswordField
+                  label="Nouveau mot de passe"
+                  placeholder="8 caractères minimum"
+                  minLength={8}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
               </div>
               <div className="field-row">
-                <label>Confirmer le mot de passe
-                  <input
-                    type="password"
-                    placeholder="8 caractères minimum"
-                    minLength={8}
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                  />
-                </label>
+                <PasswordField
+                  label="Confirmer le mot de passe"
+                  placeholder="8 caractères minimum"
+                  minLength={8}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
               </div>
             </div>
 

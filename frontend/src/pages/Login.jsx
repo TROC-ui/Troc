@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
+import PasswordField from '../components/PasswordField'
 
 export default function Login() {
   useSEO('Connexion')
@@ -28,7 +29,7 @@ export default function Login() {
       await login(formData.email, formData.password)
       navigate('/dashboard')
     } catch (err) {
-      setLocalError(error || 'Erreur lors de la connexion')
+      setLocalError(err.response?.data?.message || 'Erreur lors de la connexion')
     }
   }
 
@@ -62,16 +63,13 @@ export default function Login() {
                 </label>
               </div>
               <div className="field-row">
-                <label>Mot de passe
-                  <input
-                    type="password"
-                    name="password"
-                    placeholder="••••••••"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                </label>
+                <PasswordField
+                  label="Mot de passe"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
               </div>
               <p style={{ textAlign: 'right', margin: '-8px 0 0' }}>
                 <Link to="/mot-de-passe-oublie" className="glint" style={{ fontSize: '13px', fontWeight: 600 }}>

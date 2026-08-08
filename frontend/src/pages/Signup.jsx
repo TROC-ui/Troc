@@ -4,6 +4,7 @@ import { useAuthStore } from '../store/authStore'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
 import Logo from '../components/Logo'
+import PasswordField from '../components/PasswordField'
 
 export default function Signup() {
   useSEO("Créer un compte", "Rejoignez le réseau Troc — inscription réservée aux opticiens professionnels.")
@@ -80,9 +81,15 @@ export default function Signup() {
                   </label>
                 </div>
                 <div className="field-row">
-                  <label>Mot de passe
-                    <input type="password" name="password" placeholder="8 caractères minimum" minLength={8} value={formData.password} onChange={handleChange} required />
-                  </label>
+                  <PasswordField
+                    label="Mot de passe"
+                    name="password"
+                    placeholder="8 caractères minimum"
+                    minLength={8}
+                    value={formData.password}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                  />
                 </div>
               </div>
 
