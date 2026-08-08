@@ -20,16 +20,12 @@
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
-  border-radius: 24px;
-  overflow: hidden;
 }
 
-.hero-illustration img {
+.hero-illustration svg {
   width: 100%;
   height: auto;
   display: block;
-  object-fit: cover;
-  mix-blend-mode: multiply;
 }
 
 /* --- Fonctionnement steps (editorial, flat) --- */

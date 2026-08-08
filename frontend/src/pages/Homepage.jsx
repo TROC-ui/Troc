@@ -7,7 +7,7 @@ import PointsTeaser from '../components/PointsTeaser'
 import publierPhoto from '../assets/photos/publier.jpg'
 import echangerPhoto from '../assets/photos/echanger.jpg'
 import recevoirPhoto from '../assets/photos/recevoir.jpg'
-import mascottesEchange from '../assets/images/mascottes-echange.jpg'
+import HeroIllustration from '../components/HeroIllustration'
 import './Homepage.css'
 
 export default function Homepage() {
@@ -43,7 +43,7 @@ export default function Homepage() {
 
             <div className="hero-right">
               <div className="hero-illustration">
-                <img src={mascottesEchange} alt="Deux opticiens Troc échangeant une paire de lunettes" />
+                <HeroIllustration />
               </div>
             </div>
           </div>
