@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import API from '../store/authStore'
 import { API_BASE } from '../utils/apiBase'
+import { useToastStore } from '../store/toastStore'
 import Logo from './Logo'
 import ToastContainer from './ToastContainer'
 import './Layout.css'
@@ -22,6 +24,25 @@ export default function Layout({ children }) {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => setPointsBalance(data?.balance ?? 0))
       .catch(() => setPointsBalance(0))
+  }, [isAuthenticated, user?.id])
+
+  // Notifie une seule fois quand le compte vient d'être vérifié (statut
+  // approuvé pas encore vu sur cet appareil) — évite de devoir aller
+  // consulter son profil pour s'en apercevoir.
+  useEffect(() => {
+    if (!isAuthenticated || !user?.id) return
+    API.get('/users/verification/mine')
+      .then((res) => {
+        const status = res.data?.status
+        const seenKey = `verificationNotified:${user.id}`
+        if (status === 'approved' && localStorage.getItem(seenKey) !== 'approved') {
+          useToastStore.getState().show('Votre compte a été vérifié ✅', 'success')
+          localStorage.setItem(seenKey, 'approved')
+        } else if (status !== 'approved') {
+          localStorage.removeItem(seenKey)
+        }
+      })
+      .catch(() => {})
   }, [isAuthenticated, user?.id])
 
   // Ferme le menu mobile à chaque changement de route, et bloque le scroll
