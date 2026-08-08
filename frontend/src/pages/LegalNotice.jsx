@@ -16,7 +16,7 @@ export default function LegalNotice() {
           </div>
           <h1 style={{ fontSize: 'clamp(30px, 3.8vw, 44px)' }}>Mentions légales.</h1>
           <div className="disclaimer-box">
-            <strong>Document à finaliser avant mise en ligne réelle.</strong> Les informations marquées <span className="placeholder" style={{ color: '#a97e22' }}>entre crochets</span> sont des exemples à remplacer par les données réelles de l'éditeur (nom, contact, hébergeur, etc.), à faire valider par un professionnel du droit avant l'ouverture du service à de vrais utilisateurs.
+            Ce document reflète la configuration réelle du service. Il reste recommandé de le faire relire par un professionnel du droit avant une ouverture à grande échelle.
           </div>
         </div>
       </header>
@@ -42,7 +42,13 @@ export default function LegalNotice() {
 
             <h2>Hébergement</h2>
             <p>
-              Le site est hébergé par <span className="placeholder">[Raison sociale de l'hébergeur]</span>, dont le siège social est situé <span className="placeholder">[adresse de l'hébergeur]</span>, joignable au <span className="placeholder">[téléphone / site web de l'hébergeur]</span>.
+              Le site (partie visible, front-end) est hébergé par <strong>Vercel Inc.</strong>, 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis — <a href="https://vercel.com" target="_blank" rel="noreferrer">vercel.com</a>.
+            </p>
+            <p>
+              Le serveur applicatif (back-end) est hébergé par <strong>Render Services, Inc.</strong>, 525 Brannan Street, Suite 300, San Francisco, CA 94107, États-Unis — <a href="https://render.com" target="_blank" rel="noreferrer">render.com</a>.
+            </p>
+            <p>
+              La base de données est hébergée par <strong>Neon, Inc.</strong> (<a href="https://neon.tech" target="_blank" rel="noreferrer">neon.tech</a>), sur des serveurs physiquement situés dans l'Union européenne (région Francfort, Allemagne).
             </p>
 
             <h2>Propriété intellectuelle</h2>

@@ -16,7 +16,7 @@ export default function Privacy() {
           </div>
           <h1 style={{ fontSize: 'clamp(30px, 3.8vw, 44px)' }}>Politique de confidentialité.</h1>
           <div className="disclaimer-box">
-            <strong>Document à faire valider avant ouverture réelle du service.</strong> Cette page décrit fidèlement les données collectées et traitées telles qu'implémentées sur la plateforme aujourd'hui. Les informations marquées <span className="placeholder" style={{ color: '#a97e22' }}>entre crochets</span> restent à compléter avec l'identité réelle du responsable de traitement, et l'ensemble à faire relire par un professionnel du droit (RGPD) avant tout traitement de données réelles.
+            Cette page décrit fidèlement les données collectées et traitées telles qu'implémentées sur la plateforme aujourd'hui. Il reste recommandé de la faire relire par un professionnel du droit (RGPD) avant une ouverture à grande échelle.
           </div>
         </div>
       </header>
@@ -66,17 +66,22 @@ export default function Privacy() {
               Aucune donnée n'est transmise à un tiers à des fins commerciales.
             </p>
 
-            <h2>6. Durée de conservation</h2>
+            <h2>6. Hébergement et localisation des données</h2>
+            <p>
+              Votre base de données (compte, annonces, messages, points) est hébergée par Neon, Inc. sur des serveurs physiquement situés dans l'Union européenne (région Francfort, Allemagne). Le serveur applicatif qui traite vos requêtes est hébergé par Render Services, Inc., également en Union européenne (région Francfort, Allemagne). L'interface du site que vous consultez est distribuée par Vercel Inc., société américaine dont l'infrastructure de diffusion peut ponctuellement transiter par des serveurs situés hors de l'Union européenne, sans qu'aucune donnée personnelle n'y soit stockée à ce niveau — Vercel se limite à la livraison des fichiers publics du site (interface, code, images). Le détail de ces hébergeurs figure dans les <Link to="/mentions-legales">mentions légales</Link>.
+            </p>
+
+            <h2>7. Durée de conservation</h2>
             <p>
               Vos données sont conservées pendant toute la durée de votre inscription sur la plateforme, puis archivées ou supprimées dans un délai raisonnable après la clôture de votre compte, sous réserve des obligations légales de conservation applicables.
             </p>
 
-            <h2>7. Sécurité</h2>
+            <h2>8. Sécurité</h2>
             <p>
               Votre mot de passe est stocké sous forme hachée (bcrypt) et n'est jamais accessible en clair, y compris par notre équipe. L'accès aux données nécessite une authentification par jeton, non partagée entre comptes.
             </p>
 
-            <h2>8. Vos droits</h2>
+            <h2>9. Vos droits</h2>
             <p>
               Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité sur vos données personnelles.
             </p>
@@ -84,12 +89,12 @@ export default function Privacy() {
               Pour exercer ces droits, contactez-nous à troc.gestion@gmail.com. Vous disposez également du droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr) si vous estimez que le traitement de vos données n'est pas conforme à la réglementation.
             </p>
 
-            <h2>9. Cookies et traceurs</h2>
+            <h2>10. Cookies et traceurs</h2>
             <p>
               Troc n'utilise aucun cookie publicitaire ni traceur tiers. La connexion utilise un jeton de session stocké dans le stockage local de votre navigateur, nécessaire au seul fonctionnement du service, et supprimé lors de votre déconnexion.
             </p>
 
-            <h2>10. Contact</h2>
+            <h2>11. Contact</h2>
             <p>
               Pour toute question relative à cette politique ou à vos données personnelles, contactez-nous à troc.gestion@gmail.com.
             </p>
