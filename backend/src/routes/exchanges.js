@@ -103,6 +103,10 @@ router.post('/', verifyToken, async (req, res) => {
       return res.status(404).json({ message: 'Annonce introuvable' })
     }
 
+    if (listing.userId === req.userId) {
+      return res.status(400).json({ message: 'Impossible de proposer un échange sur votre propre annonce' })
+    }
+
     const exchange = await prisma.exchange.create({
       data: {
         senderId: req.userId,
@@ -201,8 +205,11 @@ router.put('/:id/status', verifyToken, async (req, res) => {
 
     // Règlement automatique des points quand l'échange passe à "Validé" (ACCEPTED),
     // sauf si les deux opticiens ont choisi de valider sans compensation.
-    if (status === 'ACCEPTED' && !skipPointsCompensation) {
-      await settleExchangePoints(updated)
+    if (status === 'ACCEPTED') {
+      await prisma.exchange.update({ where: { id: req.params.id }, data: { acceptedAt: new Date() } })
+      if (!skipPointsCompensation) {
+        await settleExchangePoints(updated)
+      }
     }
 
     // Si l'échange avait déjà été validé avec compensation en points avant d'être
@@ -245,6 +252,7 @@ router.post('/:id/ship', verifyToken, async (req, res) => {
 
     if (nowBothShipped) {
       data.status = 'SHIPPED'
+      data.shippedAt = new Date()
     }
 
     const updated = await prisma.exchange.update({

@@ -85,6 +85,10 @@ router.post('/', verifyToken, async (req, res) => {
       return res.status(400).json({ message: 'Champs obligatoires manquants' })
     }
 
+    if (!Array.isArray(photos) || photos.filter(Boolean).length < 3) {
+      return res.status(400).json({ message: '3 photos minimum sont requises (face, profil, état des charnières)' })
+    }
+
     const listing = await prisma.listing.create({
       data: {
         userId: req.userId,
