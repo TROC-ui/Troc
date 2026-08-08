@@ -11,15 +11,21 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [resetLink, setResetLink] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setResetLink('')
+    setMessage('')
     setLoading(true)
     try {
       const res = await API.post('/auth/forgot-password', { email })
-      setResetLink(res.data.resetLink)
+      if (res.data.resetLink) {
+        setResetLink(res.data.resetLink)
+      } else {
+        setMessage(res.data.message)
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur lors de la demande de réinitialisation')
     } finally {
@@ -60,6 +66,12 @@ export default function ForgotPassword() {
             <button type="submit" className="btn-primary" style={{ width: '100%', textAlign: 'center', boxSizing: 'border-box', display: 'block' }} disabled={loading}>
               {loading ? 'Génération…' : 'Générer le lien de réinitialisation'}
             </button>
+
+            {message && (
+              <p className="section-note" style={{ textAlign: 'center', margin: '20px auto 0', maxWidth: 'none' }}>
+                {message}
+              </p>
+            )}
 
             {resetLink && (
               <div className="verify-card" style={{ marginTop: '20px' }}>

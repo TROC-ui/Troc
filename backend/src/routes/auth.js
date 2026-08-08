@@ -65,14 +65,21 @@ router.post('/forgot-password', async (req, res) => {
     }
 
     const resetToken = await requestPasswordReset(email)
-
-    // Pas d'envoi d'email configuré (pas de clé SendGrid) : le lien est
-    // renvoyé directement dans la réponse pour un usage en développement.
     const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`
 
-    res.json({ message: 'Lien de réinitialisation généré', resetLink })
+    // Pas d'envoi d'email configuré (pas de clé SendGrid) : en développement
+    // uniquement, le lien est renvoyé directement dans la réponse pour
+    // pouvoir tester le flux. En production, le renvoyer exposerait un
+    // moyen de prendre le contrôle de n'importe quel compte à partir de son
+    // seul email — tant que l'envoi d'email réel n'est pas branché, la
+    // demande est enregistrée mais aucun lien exploitable n'est révélé.
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ message: 'Lien de réinitialisation généré', resetLink })
+    }
+    res.json({ message: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.' })
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    // Message générique pour ne pas révéler si l'email existe en base.
+    res.status(200).json({ message: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.' })
   }
 })
 
