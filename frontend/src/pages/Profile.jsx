@@ -8,6 +8,7 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useSEO } from '../hooks/useSEO'
 import { SkeletonBlock } from '../components/Skeleton'
 import { useToastStore } from '../store/toastStore'
+import PasswordField from '../components/PasswordField'
 import './Profile.css'
 
 function timeAgo(dateString) {
@@ -36,6 +37,10 @@ export default function Profile() {
   const [verificationLoading, setVerificationLoading] = useState(true)
   const [adeliInput, setAdeliInput] = useState('')
   const [verificationSubmitting, setVerificationSubmitting] = useState(false)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmNewPassword, setConfirmNewPassword] = useState('')
+  const [passwordSubmitting, setPasswordSubmitting] = useState(false)
   const [confianceRef, confianceVisible] = useScrollReveal()
   const [annoncesRef, annoncesVisible] = useScrollReveal()
   const [avisRef, avisVisible] = useScrollReveal()
@@ -84,6 +89,27 @@ export default function Profile() {
       useToastStore.getState().show(err.response?.data?.message || "Erreur lors de l'envoi", 'error')
     } finally {
       setVerificationSubmitting(false)
+    }
+  }
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault()
+    if (passwordSubmitting) return
+    if (newPassword !== confirmNewPassword) {
+      useToastStore.getState().show('Les nouveaux mots de passe ne correspondent pas', 'error')
+      return
+    }
+    setPasswordSubmitting(true)
+    try {
+      await API.put('/users/password', { currentPassword, newPassword })
+      useToastStore.getState().show('Mot de passe mis à jour.')
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmNewPassword('')
+    } catch (err) {
+      useToastStore.getState().show(err.response?.data?.message || 'Erreur lors du changement de mot de passe', 'error')
+    } finally {
+      setPasswordSubmitting(false)
     }
   }
 
@@ -297,6 +323,42 @@ export default function Profile() {
                 </form>
               )}
             </div>
+          )}
+
+          {isOwnProfile && (
+            <form className="verification-form" onSubmit={handleChangePassword} style={{ marginTop: '24px' }}>
+              <div className="section-label" style={{ marginBottom: '10px' }}>Sécurité</div>
+              <p className="section-note" style={{ marginBottom: '14px', maxWidth: 'none' }}>
+                Changez votre mot de passe. Vous devrez saisir votre mot de passe actuel.
+              </p>
+              <div className="verification-form-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '12px' }}>
+                <PasswordField
+                  label="Mot de passe actuel"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  autoComplete="current-password"
+                />
+                <PasswordField
+                  label="Nouveau mot de passe"
+                  placeholder="8 caractères minimum"
+                  minLength={8}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
+                <PasswordField
+                  label="Confirmer le nouveau mot de passe"
+                  placeholder="8 caractères minimum"
+                  minLength={8}
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  autoComplete="new-password"
+                />
+                <button type="submit" className="btn-primary" disabled={passwordSubmitting} style={{ alignSelf: 'flex-start' }}>
+                  {passwordSubmitting ? 'Mise à jour…' : 'Mettre à jour le mot de passe'}
+                </button>
+              </div>
+            </form>
           )}
         </div>
       </section>

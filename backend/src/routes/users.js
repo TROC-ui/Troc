@@ -1,6 +1,7 @@
 import express from 'express'
 import { verifyToken } from '../middleware/auth.js'
 import { PrismaClient } from '@prisma/client'
+import { comparePassword, hashPassword } from '../services/authService.js'
 
 const router = express.Router()
 const prisma = new PrismaClient()
@@ -152,6 +153,33 @@ router.put('/profile', verifyToken, async (req, res) => {
     res.json(updated)
   } catch (error) {
     res.status(400).json({ message: 'Erreur lors de la mise à jour du profil' })
+  }
+})
+
+// PUT /users/password - Change the connected user's password
+router.put('/password', verifyToken, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: 'Champs obligatoires manquants' })
+    }
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: 'Le nouveau mot de passe doit faire au moins 8 caractères' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: req.userId } })
+    const match = await comparePassword(currentPassword, user.password)
+    if (!match) {
+      return res.status(401).json({ message: 'Mot de passe actuel incorrect' })
+    }
+
+    const hashed = await hashPassword(newPassword)
+    await prisma.user.update({ where: { id: req.userId }, data: { password: hashed } })
+
+    res.json({ message: 'Mot de passe mis à jour' })
+  } catch (error) {
+    res.status(400).json({ message: 'Erreur lors du changement de mot de passe' })
   }
 })
 
