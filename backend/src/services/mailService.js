@@ -27,7 +27,14 @@ const LOGO_URL = 'https://troc-frontend-seven.vercel.app/apple-touch-icon.png'
 function layout(title, bodyHtml) {
   return `
     <div style="font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px; color: #14171C;">
-      <div style="font-weight: 700; font-size: 20px; margin-bottom: 24px;">Troc</div>
+      <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
+        <tr>
+          <td valign="middle" style="padding-right: 8px;">
+            <img src="${LOGO_URL}" alt="" width="24" height="24" style="display: block; border-radius: 6px;" />
+          </td>
+          <td valign="middle" style="font-weight: 700; font-size: 20px;">Troc</td>
+        </tr>
+      </table>
       <h1 style="font-size: 22px; margin-bottom: 16px;">${title}</h1>
       ${bodyHtml}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px; border-radius: 16px; background: linear-gradient(135deg, #7c3aed, #107f72);">
