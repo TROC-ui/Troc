@@ -43,14 +43,7 @@ function layout(title, bodyHtml) {
       </table>
       <h1 style="font-size: 22px; margin-bottom: 16px;">${title}</h1>
       ${bodyHtml}
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top: 32px; border-radius: 16px; background: linear-gradient(135deg, #7c3aed, #107f72);">
-        <tr>
-          <td align="center" style="padding: 28px 24px;">
-            <img src="${LOGO_URL}" alt="Troc" width="48" height="48" style="display: block; border-radius: 12px;" />
-          </td>
-        </tr>
-      </table>
-      <p style="margin-top: 16px; font-size: 12px; color: #5C6560; text-align: center;">
+      <p style="margin-top: 32px; font-size: 12px; color: #5C6560; text-align: center;">
         Troc — réseau d'échange entre opticiens.
       </p>
     </div>
