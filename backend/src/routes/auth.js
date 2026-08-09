@@ -1,6 +1,7 @@
 import express from 'express'
 import { signup, login, getUser, requestPasswordReset, resetPassword } from '../services/authService.js'
 import { verifyToken } from '../middleware/auth.js'
+import { sendWelcomeEmail, sendPasswordResetEmail } from '../services/mailService.js'
 
 const router = express.Router()
 
@@ -14,6 +15,8 @@ router.post('/signup', async (req, res) => {
     }
 
     const { user, token } = await signup({ email, password, shopName, city, exchangeZone, professionalNumber })
+
+    sendWelcomeEmail(user).catch(() => {})
 
     res.json({
       user: {
@@ -67,12 +70,16 @@ router.post('/forgot-password', async (req, res) => {
     const resetToken = await requestPasswordReset(email)
     const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`
 
-    // Pas d'envoi d'email configuré (pas de clé SendGrid) : en développement
-    // uniquement, le lien est renvoyé directement dans la réponse pour
-    // pouvoir tester le flux. En production, le renvoyer exposerait un
-    // moyen de prendre le contrôle de n'importe quel compte à partir de son
-    // seul email — tant que l'envoi d'email réel n'est pas branché, la
-    // demande est enregistrée mais aucun lien exploitable n'est révélé.
+    if (process.env.SENDGRID_API_KEY) {
+      // Envoi réel par email : le lien n'est jamais renvoyé dans la réponse HTTP
+      // (sinon n'importe qui pourrait prendre le contrôle d'un compte en
+      // connaissant juste son email).
+      await sendPasswordResetEmail({ email }, resetLink)
+      return res.json({ message: 'Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.' })
+    }
+
+    // Pas de clé SendGrid configurée (dev local) : le lien est renvoyé
+    // directement dans la réponse pour pouvoir tester le flux sans email réel.
     if (process.env.NODE_ENV !== 'production') {
       return res.json({ message: 'Lien de réinitialisation généré', resetLink })
     }
