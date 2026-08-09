@@ -30,7 +30,13 @@ function layout(title, bodyHtml) {
       <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom: 24px;">
         <tr>
           <td valign="middle" style="padding-right: 8px;">
-            <img src="${LOGO_URL}" alt="" width="24" height="24" style="display: block; border-radius: 6px;" />
+            <table role="presentation" cellpadding="0" cellspacing="0" style="background: #ffffff; border-radius: 8px;">
+              <tr>
+                <td style="padding: 4px;">
+                  <img src="${LOGO_URL}" alt="" width="20" height="20" style="display: block;" />
+                </td>
+              </tr>
+            </table>
           </td>
           <td valign="middle" style="font-weight: 700; font-size: 20px;">Troc</td>
         </tr>
