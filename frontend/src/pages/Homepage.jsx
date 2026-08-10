@@ -25,6 +25,19 @@ export default function Homepage() {
   return (
     <div>
       <div>
+        {/* Vidéo d'intro plein écran */}
+        <section className="video-hero">
+          <video
+            className="video-hero-media"
+            src="/videos/troc-2-lunettes.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="video-hero-scroll">Découvrir ↓</div>
+        </section>
+
         {/* Hero Section */}
         <section className="hero snap-section">
           <div className="wrap hero-wrap">
