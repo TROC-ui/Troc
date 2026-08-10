@@ -35,6 +35,16 @@
   50% { transform: translate(-50%, 8px); }
 }
 
+/* Sur mobile, la vidéo est en 16:9 (large) dans un écran étroit et haut :
+   "cover" recadrerait trop sur les côtés et couperait le texte ("TROC" en
+   plein cadre). "contain" garde le cadrage complet, quitte à laisser des
+   bandes noires en haut/bas — le fond du conteneur est déjà noir. */
+@media (max-width: 700px) {
+  .video-hero-media {
+    object-fit: contain;
+  }
+}
+
 /* --- Hero visual (homepage-only) --- */
 .hero-left {
   max-width: 620px;
