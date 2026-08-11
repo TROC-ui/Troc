@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/Layout'
 import Homepage from './pages/Homepage'
@@ -109,6 +110,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
+      <Analytics />
     </Layout>
   )
 }
