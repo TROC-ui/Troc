@@ -281,3 +281,29 @@ nav .wrap {
     text-align: center;
   }
 }
+
+/* Bouton flottant "S'inscrire", visible uniquement sur mobile (le bouton de
+   la nav est caché derrière le menu hamburger, invisible pour quelqu'un qui
+   arrive depuis un lien externe type TikTok). */
+.mobile-signup-fab {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-signup-fab {
+    display: block;
+    position: fixed;
+    left: 50%;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    z-index: 200;
+    background: linear-gradient(135deg, var(--violet), var(--teal));
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 13px 32px;
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(20, 23, 26, 0.35);
+    text-decoration: none;
+  }
+}

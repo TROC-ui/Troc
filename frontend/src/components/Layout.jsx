@@ -156,6 +156,13 @@ export default function Layout({ children }) {
         {children}
       </main>
 
+      {/* Bouton flottant, mobile uniquement : le bouton "S'inscrire" de la
+          nav est caché derrière le menu hamburger sur mobile, invisible pour
+          quelqu'un qui arrive depuis un lien externe (TikTok, etc.). */}
+      {!isAuthenticated && (
+        <Link to="/signup" className="mobile-signup-fab">S'inscrire</Link>
+      )}
+
       {/* Footer */}
       <footer className="footer">
         <div className="wrap">
