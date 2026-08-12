@@ -158,8 +158,11 @@ export default function Layout({ children }) {
 
       {/* Bouton flottant, mobile uniquement : le bouton "S'inscrire" de la
           nav est caché derrière le menu hamburger sur mobile, invisible pour
-          quelqu'un qui arrive depuis un lien externe (TikTok, etc.). */}
-      {!isAuthenticated && (
+          quelqu'un qui arrive depuis un lien externe (TikTok, etc.). Masqué
+          sur /signup et /login : ces pages ont déjà leur propre bouton, et
+          le flottant finissait par recouvrir des champs du formulaire en
+          scrollant. */}
+      {!isAuthenticated && !['/signup', '/login'].includes(location.pathname) && (
         <Link to="/signup" className="mobile-signup-fab">S'inscrire</Link>
       )}
 
