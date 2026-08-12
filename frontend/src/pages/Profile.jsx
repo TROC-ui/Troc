@@ -45,6 +45,7 @@ export default function Profile() {
   const [deletePassword, setDeletePassword] = useState('')
   const [deleteConfirming, setDeleteConfirming] = useState(false)
   const [deleteSubmitting, setDeleteSubmitting] = useState(false)
+  const [securityExpanded, setSecurityExpanded] = useState(false)
   const [confianceRef, confianceVisible] = useScrollReveal()
   const [annoncesRef, annoncesVisible] = useScrollReveal()
   const [avisRef, avisVisible] = useScrollReveal()
@@ -345,7 +346,18 @@ export default function Profile() {
             </div>
           )}
 
-          {isOwnProfile && (
+          {isOwnProfile && !securityExpanded && (
+            <button
+              type="button"
+              className="btn-ghost"
+              style={{ marginTop: '24px' }}
+              onClick={() => setSecurityExpanded(true)}
+            >
+              Paramètres du compte
+            </button>
+          )}
+
+          {isOwnProfile && securityExpanded && (
             <form className="verification-form" onSubmit={handleChangePassword} style={{ marginTop: '24px' }}>
               <div className="section-label" style={{ marginBottom: '10px' }}>Sécurité</div>
               <p className="section-note" style={{ marginBottom: '14px', maxWidth: 'none' }}>
@@ -381,7 +393,7 @@ export default function Profile() {
             </form>
           )}
 
-          {isOwnProfile && (
+          {isOwnProfile && securityExpanded && (
             <div style={{ marginTop: '24px', padding: '20px', border: '1px solid #E0736B', borderRadius: '12px' }}>
               <div className="section-label" style={{ marginBottom: '10px', color: '#B3261E' }}>Zone dangereuse</div>
               <p className="section-note" style={{ marginBottom: '14px', maxWidth: 'none' }}>
