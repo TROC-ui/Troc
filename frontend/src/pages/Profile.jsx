@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import API from '../store/authStore'
 import { API_BASE } from '../utils/apiBase'
@@ -24,7 +24,8 @@ function timeAgo(dateString) {
 
 export default function Profile() {
   const { userId } = useParams()
-  const { user: authUser, isAuthenticated } = useAuthStore()
+  const { user: authUser, isAuthenticated, logout } = useAuthStore()
+  const navigate = useNavigate()
   const isOwnProfile = !userId || userId === authUser?.id
   const targetId = userId || authUser?.id
   useSEO(isOwnProfile ? 'Mon profil' : 'Profil opticien')
@@ -41,6 +42,9 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [passwordSubmitting, setPasswordSubmitting] = useState(false)
+  const [deletePassword, setDeletePassword] = useState('')
+  const [deleteConfirming, setDeleteConfirming] = useState(false)
+  const [deleteSubmitting, setDeleteSubmitting] = useState(false)
   const [confianceRef, confianceVisible] = useScrollReveal()
   const [annoncesRef, annoncesVisible] = useScrollReveal()
   const [avisRef, avisVisible] = useScrollReveal()
@@ -110,6 +114,22 @@ export default function Profile() {
       useToastStore.getState().show(err.response?.data?.message || 'Erreur lors du changement de mot de passe', 'error')
     } finally {
       setPasswordSubmitting(false)
+    }
+  }
+
+  const handleDeleteAccount = async (e) => {
+    e.preventDefault()
+    if (deleteSubmitting) return
+    setDeleteSubmitting(true)
+    try {
+      await API.delete('/users/me', { data: { password: deletePassword } })
+      useToastStore.getState().show('Votre compte a été supprimé.')
+      logout()
+      navigate('/')
+    } catch (err) {
+      useToastStore.getState().show(err.response?.data?.message || 'Erreur lors de la suppression du compte', 'error')
+    } finally {
+      setDeleteSubmitting(false)
     }
   }
 
@@ -359,6 +379,52 @@ export default function Profile() {
                 </button>
               </div>
             </form>
+          )}
+
+          {isOwnProfile && (
+            <div style={{ marginTop: '24px', padding: '20px', border: '1px solid #E0736B', borderRadius: '12px' }}>
+              <div className="section-label" style={{ marginBottom: '10px', color: '#B3261E' }}>Zone dangereuse</div>
+              <p className="section-note" style={{ marginBottom: '14px', maxWidth: 'none' }}>
+                Supprimer votre compte efface définitivement votre profil, vos annonces, vos échanges, messages et avis. Cette action est irréversible.
+              </p>
+
+              {!deleteConfirming ? (
+                <button
+                  type="button"
+                  className="btn-ghost"
+                  style={{ borderColor: '#B3261E', color: '#B3261E' }}
+                  onClick={() => setDeleteConfirming(true)}
+                >
+                  Supprimer mon compte
+                </button>
+              ) : (
+                <form onSubmit={handleDeleteAccount} className="verification-form-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '12px' }}>
+                  <PasswordField
+                    label="Confirmez avec votre mot de passe"
+                    value={deletePassword}
+                    onChange={(e) => setDeletePassword(e.target.value)}
+                    autoComplete="current-password"
+                  />
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button
+                      type="submit"
+                      className="btn-primary"
+                      style={{ background: '#B3261E' }}
+                      disabled={deleteSubmitting}
+                    >
+                      {deleteSubmitting ? 'Suppression…' : 'Confirmer la suppression'}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      onClick={() => { setDeleteConfirming(false); setDeletePassword('') }}
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           )}
         </div>
       </section>

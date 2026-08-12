@@ -183,6 +183,30 @@ router.put('/password', verifyToken, async (req, res) => {
   }
 })
 
+// DELETE /users/me - Delete the connected user's account (cascade sur toutes
+// ses données : annonces, échanges, messages, avis, points).
+router.delete('/me', verifyToken, async (req, res) => {
+  try {
+    const { password } = req.body
+
+    if (!password) {
+      return res.status(400).json({ message: 'Mot de passe requis pour confirmer la suppression' })
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: req.userId } })
+    const match = await comparePassword(password, user.password)
+    if (!match) {
+      return res.status(401).json({ message: 'Mot de passe incorrect' })
+    }
+
+    await prisma.user.delete({ where: { id: req.userId } })
+
+    res.json({ message: 'Compte supprimé' })
+  } catch (error) {
+    res.status(400).json({ message: 'Erreur lors de la suppression du compte' })
+  }
+})
+
 // GET /users/:id/points - Get user points
 router.get('/:id/points', async (req, res) => {
   try {
